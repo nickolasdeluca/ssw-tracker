@@ -1,10 +1,14 @@
-import styles from '../styles/Home.module.css';
+"use client";
+
+import { useState } from "react";
 
 export default function Page() {
+  const [count, setCount] = useState(0);
+
   return (
-    <div className={styles.container}>
-      <h1>SSW Tracking</h1>
-      <p>Test</p>
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
 }
