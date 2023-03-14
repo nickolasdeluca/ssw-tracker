@@ -8,6 +8,7 @@ import {
   ChakraProvider,
   Checkbox,
   Container,
+  extendTheme,
   Input,
   Table,
   Tbody,
@@ -26,6 +27,16 @@ export default function Tracker() {
   const [tracking, setTracking] = useState([]);
   const [chaveNfe, setChaveNfe] = useState("");
   const [timerEnabled, setTimerEnabled] = useState(false);
+
+  const theme = extendTheme({
+    styles: {
+      global: {
+        body: {
+          bg: "#E9E9E9",
+        },
+      },
+    },
+  });
 
   const handleInputChange = (event) => {
     setChaveNfe(event.target.value);
@@ -108,7 +119,7 @@ export default function Tracker() {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Container maxWidth={"40%"} marginTop={5}>
         <Card maxWidth={"100%"}>
           <Text marginX={5} marginTop={5} fontSize={"xl"} as={"b"}>
@@ -162,7 +173,7 @@ export default function Tracker() {
         </Container>
       )}
       {loading ? null : (
-        <Container maxWidth={"80%"} marginTop={5}>
+        <Container maxWidth={"80%"} marginY={5}>
           <Center>
             <Card padding={5}>
               <Text fontSize={"xl"} as={"b"}>
