@@ -18,6 +18,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { FaInfo } from "react-icons/fa";
 
 export default function Tracker() {
   const [loading, setLoading] = useState(true);
@@ -176,6 +177,14 @@ export default function Tracker() {
                           <Td>{item.data_hora_efetiva}</Td>
                           <Td>{item.cidade}</Td>
                           <Td>{item.descricao}</Td>
+                          <Td>
+                            <Button
+                              colorScheme={"teal"}
+                              leftIcon={<FaInfo></FaInfo>}
+                            >
+                              Info
+                            </Button>
+                          </Td>
                         </Tr>
                       );
                     })}
