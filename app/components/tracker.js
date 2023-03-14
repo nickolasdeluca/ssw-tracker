@@ -86,6 +86,18 @@ export default function Tracker() {
       const header = data.documento.header;
       const tracking = data.documento.tracking;
 
+      tracking.forEach((element) => {
+        let dataHora = new Date(element.data_hora);
+        element.data_hora =
+          dataHora.toLocaleDateString() + " " + dataHora.toLocaleTimeString();
+
+        let dataHoraEfetiva = new Date(element.data_hora_efetiva);
+        element.data_hora_efetiva =
+          dataHoraEfetiva.toLocaleDateString() +
+          " " +
+          dataHoraEfetiva.toLocaleTimeString();
+      });
+
       setHeader(header);
       setTracking(tracking);
 
