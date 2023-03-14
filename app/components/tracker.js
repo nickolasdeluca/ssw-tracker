@@ -52,12 +52,12 @@ export default function Tracker() {
       timer = setInterval(() => {
         requestTrackingData();
 
-        console.log(
+        console.info(
           `Consulta automática ativada: ${timerEnabled ? "Sim" : "Não"}`
         );
 
-        timerEnabled ? null : clearInterval(timer);
-      }, 600000);
+        !timerEnabled ?? clearInterval(timer);
+      }, 6000);
     }
     return () => clearInterval(timer);
   }, [timerEnabled]);
