@@ -1,8 +1,3 @@
-"use client";
-
-import { ChakraProvider } from "@chakra-ui/react";
-import { CacheProvider } from "@emotion/react";
-
 export const metadata = {
   title: "SSW Tracking",
 };
@@ -12,9 +7,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head></head>
       <body>
-        <CacheProvider>
-          <ChakraProvider>{children}</ChakraProvider>
-        </CacheProvider>
+        {children}
       </body>
     </html>
   );

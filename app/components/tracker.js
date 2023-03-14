@@ -1,5 +1,22 @@
 "use client";
 
+import {
+  Button,
+  Card,
+  CardBody,
+  Center,
+  ChakraProvider,
+  Checkbox,
+  Container,
+  Input,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export default function Tracker() {
@@ -7,10 +24,28 @@ export default function Tracker() {
   const [header, setHeader] = useState([]);
   const [tracking, setTracking] = useState([]);
   const [chaveNfe, setChaveNfe] = useState("");
+  const [timerEnabled, setTimerEnabled] = useState(false);
 
   const handleInputChange = (event) => {
     setChaveNfe(event.target.value);
     localStorage.setItem("chaveNfe", event.target.value);
+  };
+
+  const handleCheckboxChange = (event) => {
+    setTimerEnabled(event.target.checked);
+
+    console.log(`event is checked: ${event.target.checked}`);
+    console.log(`state is enabled: ${timerEnabled}`);
+
+    if (event.target.checked == true) {
+      const timer = setInterval(() => {
+        requestTrackingData();
+
+        console.log(`devo executar de novo: ${timerEnabled}`);
+
+        timerEnabled ? null : clearInterval(timer);
+      }, 6000);
+    }
   };
 
   useEffect(() => {
@@ -21,6 +56,8 @@ export default function Tracker() {
   }, []);
 
   const requestTrackingData = async () => {
+    setLoading(true);
+
     if (chaveNfe === "") return console.error(`Chave NFe não informada!`);
 
     try {
@@ -55,57 +92,91 @@ export default function Tracker() {
   };
 
   return (
-    <html>
-      <head></head>
-      <div>
-        <h1>SSW Tracking</h1>
-        <form>
-          <label>
-            Chave NFe:
-            <input
+    <ChakraProvider>
+      <Container maxWidth={"40%"} marginTop={5}>
+        <Card maxWidth={"100%"}>
+          <Text marginX={5} marginTop={5}>
+            SSW Tracking
+          </Text>
+          <Text marginX={5} marginTop={5}>
+            <Input
+              placeholder="Chave da nota fiscal eletrônica"
+              size={"md"}
               type="text"
               name="chave_nfe"
               value={chaveNfe}
               onChange={handleInputChange}
             />
-          </label>
-        </form>
-        <main>
-          <button onClick={requestTrackingData}>Rastrear</button>
-        </main>
-        {loading ? null : (
-          <div>
-            {header.remetente} | {header.destinatario} | {header.nro_nf} |{" "}
-            {header.pedido}
-          </div>
-        )}
-        {loading ? null : (
-          <table>
-            <tbody>
-              <tr>
-                <th>cidade</th>
-                <th>data_hora_efetiva</th>
-                <th>descricao</th>
-                <th>nome_recebedor</th>
-                <th>ocorrencia</th>
-                <th>tipo</th>
-              </tr>
-              {tracking.map((item, index) => {
-                return (
-                  <tr key={index}>
-                    <td>{item.cidade}</td>
-                    <td>{item.data_hora_efetiva}</td>
-                    <td>{item.descricao}</td>
-                    <td>{item.nome_recebedor}</td>
-                    <td>{item.ocorrencia}</td>
-                    <td>{item.tipo}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-      </div>
-    </html>
+          </Text>
+          <Checkbox
+            defaultChecked={false}
+            marginX={5}
+            marginTop={5}
+            onChange={(e) => handleCheckboxChange(e)}
+          >
+            Consultar automaticamente de 10 em 10 minutos
+          </Checkbox>
+          <Button onClick={requestTrackingData} margin={5} colorScheme={"teal"}>
+            Rastrear
+          </Button>
+        </Card>
+      </Container>
+      {loading ? null : (
+        <Container maxWidth={"40%"} marginTop={5}>
+          <Card colorScheme={"teal"}>
+            <CardBody>
+              <Text>
+                <Text as={"b"}>Remetente</Text>: {header.remetente}
+              </Text>
+              <Text>
+                <Text as={"b"}>Destinatário</Text>: {header.destinatario}
+              </Text>
+              <Text>
+                <Text as={"b"}>Número da nota fiscal eletrônica</Text>:{" "}
+                {header.nro_nf}
+              </Text>
+              <Text>
+                <Text as={"b"}>Número do pedido</Text>: {header.pedido}
+              </Text>
+            </CardBody>
+          </Card>
+        </Container>
+      )}
+      {loading ? null : (
+        <Container maxWidth={"80%"} marginTop={5}>
+          <Center>
+            <Card padding={5}>
+              <Center>
+                <Table
+                  variant={"striped"}
+                  colorScheme={"teal"}
+                  padding={5}
+                  size={"sm"}
+                >
+                  <Thead>
+                    <Tr>
+                      <Th>Data/Hora</Th>
+                      <Th>Cidade</Th>
+                      <Th>Situação</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {tracking.map((item, index) => {
+                      return (
+                        <Tr key={index}>
+                          <Td>{item.data_hora_efetiva}</Td>
+                          <Td>{item.cidade}</Td>
+                          <Td>{item.descricao}</Td>
+                        </Tr>
+                      );
+                    })}
+                  </Tbody>
+                </Table>
+              </Center>
+            </Card>
+          </Center>
+        </Container>
+      )}
+    </ChakraProvider>
   );
 }
