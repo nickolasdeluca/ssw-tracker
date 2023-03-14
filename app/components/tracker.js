@@ -33,19 +33,6 @@ export default function Tracker() {
 
   const handleCheckboxChange = (event) => {
     setTimerEnabled(event.target.checked);
-
-    console.log(`event is checked: ${event.target.checked}`);
-    console.log(`state is enabled: ${timerEnabled}`);
-
-    if (event.target.checked == true) {
-      const timer = setInterval(() => {
-        requestTrackingData();
-
-        console.log(`devo executar de novo: ${timerEnabled}`);
-
-        timerEnabled ? null : clearInterval(timer);
-      }, 6000);
-    }
   };
 
   useEffect(() => {
@@ -54,6 +41,25 @@ export default function Tracker() {
       setChaveNfe(chaveNfe);
     }
   }, []);
+
+  useEffect(() => {
+    let timer;
+
+    if (timerEnabled) {
+      requestTrackingData();
+
+      timer = setInterval(() => {
+        requestTrackingData();
+
+        console.log(
+          `Consulta automática ativada: ${timerEnabled ? "Sim" : "Não"}`
+        );
+
+        timerEnabled ? null : clearInterval(timer);
+      }, 600000);
+    }
+    return () => clearInterval(timer);
+  }, [timerEnabled]);
 
   const requestTrackingData = async () => {
     setLoading(true);
@@ -79,9 +85,6 @@ export default function Tracker() {
       const header = data.documento.header;
       const tracking = data.documento.tracking;
 
-      console.log(header);
-      console.log(tracking);
-
       setHeader(header);
       setTracking(tracking);
 
@@ -95,7 +98,7 @@ export default function Tracker() {
     <ChakraProvider>
       <Container maxWidth={"40%"} marginTop={5}>
         <Card maxWidth={"100%"}>
-          <Text marginX={5} marginTop={5}>
+          <Text marginX={5} marginTop={5} fontSize={"xl"} as={"b"}>
             SSW Tracking
           </Text>
           <Text marginX={5} marginTop={5}>
@@ -112,9 +115,9 @@ export default function Tracker() {
             defaultChecked={false}
             marginX={5}
             marginTop={5}
-            onChange={(e) => handleCheckboxChange(e)}
+            onChange={handleCheckboxChange}
           >
-            Consultar automaticamente de 10 em 10 minutos
+            Consultar automaticamente a cada 10 minutos
           </Checkbox>
           <Button onClick={requestTrackingData} margin={5} colorScheme={"teal"}>
             Rastrear
@@ -125,7 +128,10 @@ export default function Tracker() {
         <Container maxWidth={"40%"} marginTop={5}>
           <Card colorScheme={"teal"}>
             <CardBody>
-              <Text>
+              <Text fontSize={"xl"} as={"b"}>
+                Dados do emissor/destinatário
+              </Text>
+              <Text marginTop={5}>
                 <Text as={"b"}>Remetente</Text>: {header.remetente}
               </Text>
               <Text>
@@ -146,7 +152,10 @@ export default function Tracker() {
         <Container maxWidth={"80%"} marginTop={5}>
           <Center>
             <Card padding={5}>
-              <Center>
+              <Text fontSize={"xl"} as={"b"}>
+                Informações de rastreio
+              </Text>
+              <Center marginTop={5}>
                 <Table
                   variant={"striped"}
                   colorScheme={"teal"}
