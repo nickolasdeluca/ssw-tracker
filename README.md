@@ -8,7 +8,7 @@ Importante: Este rastreador funciona apenas com transportadoras que utilizam o s
 
 * [Rede Sul Logística](https://www.redesullog.com.br/)
 
-Se você conhece alguma outra transportadora que utilize este software, entre em contato para adicionar-mos a lista
+Se você conhece alguma outra transportadora que utilize este software, entre em contato para adicionarmos na lista.
 
 ## Agradecimentos especiais
 
