@@ -1,11 +1,14 @@
 export const metadata = {
-  title: 'SSW Tracking',
-}
- 
+  title: "SSW Tracking",
+};
+
 export default function RootLayout({ children }) {
- return (
+  return (
     <html lang="en">
-      <body>{children}</body>
+      <head></head>
+      <body>
+        {children}
+      </body>
     </html>
-  )
+  );
 }
