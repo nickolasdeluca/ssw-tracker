@@ -66,7 +66,7 @@ export default function Tracker() {
   }, [timerEnabled]);
 
   const requestTrackingData = async () => {
-    setLoading(true);
+    if (loading === false) setLoading(true);
 
     if (chaveNfe === "") return console.error(`Chave NFe não informada!`);
 
