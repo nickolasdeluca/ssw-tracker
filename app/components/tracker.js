@@ -57,7 +57,7 @@ export default function Tracker() {
         );
 
         !timerEnabled ?? clearInterval(timer);
-      }, 6000);
+      }, 600000);
     }
     return () => clearInterval(timer);
   }, [timerEnabled]);
