@@ -16,10 +16,8 @@ import {
   Th,
   Thead,
   Tr,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { FaInfo } from "react-icons/fa";
 import MoreInfoModal from "./more-info";
 
 export default function Tracker() {
@@ -28,7 +26,6 @@ export default function Tracker() {
   const [tracking, setTracking] = useState([]);
   const [chaveNfe, setChaveNfe] = useState("");
   const [timerEnabled, setTimerEnabled] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleInputChange = (event) => {
     setChaveNfe(event.target.value);
@@ -181,19 +178,7 @@ export default function Tracker() {
                           <Td>{item.cidade}</Td>
                           <Td>{item.descricao}</Td>
                           <Td>
-                            <Button
-                              colorScheme={"teal"}
-                              leftIcon={<FaInfo></FaInfo>}
-                              onClick={onOpen}
-                              size={"xs"}
-                            >
-                              Info
-                            </Button>
-                            <MoreInfoModal
-                              isOpen={isOpen}
-                              onClose={onClose}
-                              tracking={item}
-                            ></MoreInfoModal>
+                            <MoreInfoModal tracking={item}></MoreInfoModal>
                           </Td>
                         </Tr>
                       );
