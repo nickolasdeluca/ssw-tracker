@@ -20,7 +20,7 @@ export default function MoreInfoModal({ tracking }) {
     <Box>
       <Button
         colorScheme={"teal"}
-        leftIcon={<FaInfo></FaInfo>}
+        leftIcon={<FaInfo />}
         onClick={onOpen}
         size={"xs"}
       >
