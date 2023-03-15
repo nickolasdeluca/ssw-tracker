@@ -17,6 +17,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import MoreInfoModal from "./more-info";
@@ -27,6 +28,7 @@ export default function Tracker() {
   const [tracking, setTracking] = useState([]);
   const [chaveNfe, setChaveNfe] = useState("");
   const [timerEnabled, setTimerEnabled] = useState(false);
+  const toast = useToast();
 
   const theme = extendTheme({
     styles: {
@@ -45,6 +47,17 @@ export default function Tracker() {
 
   const handleCheckboxChange = (event) => {
     setTimerEnabled(event.target.checked);
+  };
+
+  const showToast = (title, description, status) => {
+    return toast({
+      position: "bottom-left",
+      title: title,
+      description: description,
+      status: status,
+      duration: 9000,
+      isClosable: true,
+    });
   };
 
   useEffect(() => {
@@ -74,9 +87,25 @@ export default function Tracker() {
   }, [timerEnabled]);
 
   const requestTrackingData = async () => {
+    toast.closeAll();
+
     if (loading === false) setLoading(true);
 
-    if (chaveNfe === "") return console.error(`Chave NFe não informada!`);
+    if (chaveNfe === "") {
+      return showToast(
+        "",
+        "Informe a chave da nota fiscal eletrônica!",
+        "warning"
+      );
+    }
+
+    if (chaveNfe.length !== 44) {
+      return showToast(
+        "Chave da nota fiscal eletrônica inválida",
+        "Uma chave de nota fiscal eletrônica deve conter 44 digitos!",
+        "error"
+      );
+    }
 
     try {
       const response = await fetch(`https://ssw.inf.br/api/trackingdanfe`, {
@@ -92,7 +121,13 @@ export default function Tracker() {
 
       const data = await response.json();
 
-      if (data.success === false) return console.warn(data);
+      if (data.success === false) {
+        return showToast(
+          "Erro ao consultar o transporte da nota fiscal eletrônica",
+          `Retorno do serviço de rastreamento: ${data.message}`,
+          "error"
+        );
+      }
 
       const header = data.documento.header;
       const tracking = data.documento.tracking;
