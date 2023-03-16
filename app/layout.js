@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/react";
+
 export const metadata = {
   title: "SSW Tracking",
 };
@@ -8,6 +10,7 @@ export default function RootLayout({ children }) {
       <head></head>
       <body>
         {children}
+        <Analytics />
       </body>
     </html>
   );
