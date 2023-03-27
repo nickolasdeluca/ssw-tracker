@@ -10,7 +10,7 @@ export default function RootLayout({ children }) {
       <head></head>
       <body>
         {children}
-        <Analytics />
+        <Analytics mode={"production"} debug={false} />
       </body>
     </html>
   );
