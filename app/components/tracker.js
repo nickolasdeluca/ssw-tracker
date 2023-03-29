@@ -155,7 +155,7 @@ export default function Tracker() {
 
   return (
     <ChakraProvider theme={theme}>
-      <Container maxWidth={"40%"} marginTop={5}>
+      <Container maxWidth={"40%"} marginTop={5} minWidth={"489px"}>
         <Card maxWidth={"100%"}>
           <Text marginX={5} marginTop={5} fontSize={"xl"} as={"b"}>
             SSW Tracking
@@ -184,7 +184,7 @@ export default function Tracker() {
         </Card>
       </Container>
       {loading ? null : (
-        <Container maxWidth={"40%"} marginTop={5}>
+        <Container maxWidth={"40%"} marginTop={5} minWidth={"489px"}>
           <Card colorScheme={"teal"}>
             <CardBody>
               <Text fontSize={"xl"} as={"b"}>
@@ -208,7 +208,7 @@ export default function Tracker() {
         </Container>
       )}
       {loading ? null : (
-        <Container maxWidth={"80%"} marginY={5}>
+        <Container maxWidth={"80%"} marginY={5} minWidth={"975px"}>
           <Center>
             <Card padding={5}>
               <Text fontSize={"xl"} as={"b"}>
