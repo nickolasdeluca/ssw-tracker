@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Button,
@@ -18,15 +18,15 @@ import {
   Thead,
   Tr,
   useToast,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import MoreInfoModal from "./more-info";
+} from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import MoreInfoModal from './more-info';
 
 export default function Tracker() {
   const [loading, setLoading] = useState(true);
   const [header, setHeader] = useState([]);
   const [tracking, setTracking] = useState([]);
-  const [chaveNfe, setChaveNfe] = useState("");
+  const [chaveNfe, setChaveNfe] = useState('');
   const [timerEnabled, setTimerEnabled] = useState(false);
   const toast = useToast();
 
@@ -34,15 +34,29 @@ export default function Tracker() {
     styles: {
       global: {
         body: {
-          bg: "#E9E9E9",
+          bg: '#E9E9E9',
         },
       },
     },
   });
 
+  const handlePaste = (event) => {
+    event.preventDefault();
+
+    const text = event.clipboardData
+      .getData('text/plain')
+      .replace(/\s/g, '')
+      .replace(/\n/g, '')
+      .replace(/\t/g, '');
+
+    event.target.value = text;
+
+    handleInputChange(event);
+  };
+
   const handleInputChange = (event) => {
     setChaveNfe(event.target.value);
-    localStorage.setItem("chaveNfe", event.target.value);
+    localStorage.setItem('chaveNfe', event.target.value);
   };
 
   const handleCheckboxChange = (event) => {
@@ -51,7 +65,7 @@ export default function Tracker() {
 
   const showToast = (title, description, status) => {
     return toast({
-      position: "bottom-left",
+      position: 'bottom-left',
       title: title,
       description: description,
       status: status,
@@ -61,7 +75,7 @@ export default function Tracker() {
   };
 
   useEffect(() => {
-    const chaveNfe = localStorage.getItem("chaveNfe");
+    const chaveNfe = localStorage.getItem('chaveNfe');
     if (chaveNfe) {
       setChaveNfe(chaveNfe);
     }
@@ -77,7 +91,7 @@ export default function Tracker() {
         requestTrackingData();
 
         console.info(
-          `Consulta automática ativada: ${timerEnabled ? "Sim" : "Não"}`
+          `Consulta automática ativada: ${timerEnabled ? 'Sim' : 'Não'}`
         );
 
         !timerEnabled ?? clearInterval(timer);
@@ -91,28 +105,28 @@ export default function Tracker() {
 
     if (loading === false) setLoading(true);
 
-    if (chaveNfe === "") {
+    if (chaveNfe === '') {
       return showToast(
-        "",
-        "Informe a chave da nota fiscal eletrônica!",
-        "warning"
+        '',
+        'Informe a chave da nota fiscal eletrônica!',
+        'warning'
       );
     }
 
     if (chaveNfe.length !== 44) {
       return showToast(
-        "Chave da nota fiscal eletrônica inválida",
-        "Uma chave de nota fiscal eletrônica deve conter 44 digitos!",
-        "error"
+        'Chave da nota fiscal eletrônica inválida',
+        'Uma chave de nota fiscal eletrônica deve conter 44 digitos!',
+        'error'
       );
     }
 
     try {
       const response = await fetch(`https://ssw.inf.br/api/trackingdanfe`, {
-        method: "POST",
-        mode: "cors",
+        method: 'POST',
+        mode: 'cors',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           chave_nfe: chaveNfe,
@@ -123,9 +137,9 @@ export default function Tracker() {
 
       if (data.success === false) {
         return showToast(
-          "Erro ao consultar o transporte da nota fiscal eletrônica",
+          'Erro ao consultar o transporte da nota fiscal eletrônica',
           `Retorno do serviço de rastreamento: ${data.message}`,
-          "error"
+          'error'
         );
       }
 
@@ -135,12 +149,12 @@ export default function Tracker() {
       tracking.forEach((element) => {
         let dataHora = new Date(element.data_hora);
         element.data_hora =
-          dataHora.toLocaleDateString() + " " + dataHora.toLocaleTimeString();
+          dataHora.toLocaleDateString() + ' ' + dataHora.toLocaleTimeString();
 
         let dataHoraEfetiva = new Date(element.data_hora_efetiva);
         element.data_hora_efetiva =
           dataHoraEfetiva.toLocaleDateString() +
-          " " +
+          ' ' +
           dataHoraEfetiva.toLocaleTimeString();
       });
 
@@ -155,19 +169,20 @@ export default function Tracker() {
 
   return (
     <ChakraProvider theme={theme}>
-      <Container maxWidth={"40%"} marginTop={5} minWidth={"489px"}>
-        <Card maxWidth={"100%"}>
-          <Text marginX={5} marginTop={5} fontSize={"xl"} as={"b"}>
+      <Container maxWidth={'40%'} marginTop={5} minWidth={'489px'}>
+        <Card maxWidth={'100%'}>
+          <Text marginX={5} marginTop={5} fontSize={'xl'} as={'b'}>
             SSW Tracking
           </Text>
           <Text marginX={5} marginTop={5}>
             <Input
-              placeholder="Chave da nota fiscal eletrônica"
-              size={"md"}
-              type="text"
-              name="chave_nfe"
+              placeholder='Chave da nota fiscal eletrônica'
+              size={'md'}
+              type='text'
+              name='chave_nfe'
               value={chaveNfe}
               onChange={handleInputChange}
+              onPaste={handlePaste}
             />
           </Text>
           <Checkbox
@@ -178,48 +193,48 @@ export default function Tracker() {
           >
             Consultar automaticamente a cada 10 minutos
           </Checkbox>
-          <Button onClick={requestTrackingData} margin={5} colorScheme={"teal"}>
+          <Button onClick={requestTrackingData} margin={5} colorScheme={'teal'}>
             Rastrear
           </Button>
         </Card>
       </Container>
       {loading ? null : (
-        <Container maxWidth={"40%"} marginTop={5} minWidth={"489px"}>
-          <Card colorScheme={"teal"}>
+        <Container maxWidth={'40%'} marginTop={5} minWidth={'489px'}>
+          <Card colorScheme={'teal'}>
             <CardBody>
-              <Text fontSize={"xl"} as={"b"}>
+              <Text fontSize={'xl'} as={'b'}>
                 Dados do emissor/destinatário
               </Text>
               <Text marginTop={5}>
-                <Text as={"b"}>Remetente</Text>: {header.remetente}
+                <Text as={'b'}>Remetente</Text>: {header.remetente}
               </Text>
               <Text>
-                <Text as={"b"}>Destinatário</Text>: {header.destinatario}
+                <Text as={'b'}>Destinatário</Text>: {header.destinatario}
               </Text>
               <Text>
-                <Text as={"b"}>Número da nota fiscal eletrônica</Text>:{" "}
+                <Text as={'b'}>Número da nota fiscal eletrônica</Text>:{' '}
                 {header.nro_nf}
               </Text>
               <Text>
-                <Text as={"b"}>Número do pedido</Text>: {header.pedido}
+                <Text as={'b'}>Número do pedido</Text>: {header.pedido}
               </Text>
             </CardBody>
           </Card>
         </Container>
       )}
       {loading ? null : (
-        <Container maxWidth={"80%"} marginY={5} minWidth={"975px"}>
+        <Container maxWidth={'80%'} marginY={5} minWidth={'975px'}>
           <Center>
             <Card padding={5}>
-              <Text fontSize={"xl"} as={"b"}>
+              <Text fontSize={'xl'} as={'b'}>
                 Informações de rastreio
               </Text>
               <Center marginTop={5}>
                 <Table
-                  variant={"striped"}
-                  colorScheme={"teal"}
+                  variant={'striped'}
+                  colorScheme={'teal'}
                   padding={5}
-                  size={"sm"}
+                  size={'sm'}
                 >
                   <Thead>
                     <Tr>
