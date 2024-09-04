@@ -4,23 +4,16 @@ import {
   Button,
   Card,
   CardBody,
-  Center,
   ChakraProvider,
   Checkbox,
   Container,
   extendTheme,
   Input,
-  Table,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   useToast,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import MoreInfoModal from './more-info';
+import TrackingTable from './tracking-table';
 
 export default function Tracker() {
   const [loading, setLoading] = useState(true);
@@ -169,7 +162,7 @@ export default function Tracker() {
 
   return (
     <ChakraProvider theme={theme}>
-      <Container maxWidth={'40%'} marginTop={5} minWidth={'489px'}>
+      <Container maxWidth={'40%'} marginTop={5} minWidth={'375px'} paddingX={2}>
         <Card maxWidth={'100%'}>
           <Text marginX={5} marginTop={5} fontSize={'xl'} as={'b'}>
             SSW Tracking
@@ -199,7 +192,12 @@ export default function Tracker() {
         </Card>
       </Container>
       {loading ? null : (
-        <Container maxWidth={'40%'} marginTop={5} minWidth={'489px'}>
+        <Container
+          maxWidth={'40%'}
+          marginTop={5}
+          minWidth={'375px'}
+          paddingX={2}
+        >
           <Card colorScheme={'teal'}>
             <CardBody>
               <Text fontSize={'xl'} as={'b'}>
@@ -222,47 +220,7 @@ export default function Tracker() {
           </Card>
         </Container>
       )}
-      {loading ? null : (
-        <Container maxWidth={'80%'} marginY={5} minWidth={'975px'}>
-          <Center>
-            <Card padding={5}>
-              <Text fontSize={'xl'} as={'b'}>
-                Informações de rastreio
-              </Text>
-              <Center marginTop={5}>
-                <Table
-                  variant={'striped'}
-                  colorScheme={'teal'}
-                  padding={5}
-                  size={'sm'}
-                >
-                  <Thead>
-                    <Tr>
-                      <Th>Data/Hora</Th>
-                      <Th>Cidade</Th>
-                      <Th>Situação</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {tracking.map((item, index) => {
-                      return (
-                        <Tr key={index}>
-                          <Td>{item.data_hora_efetiva}</Td>
-                          <Td>{item.cidade}</Td>
-                          <Td>{item.descricao}</Td>
-                          <Td>
-                            <MoreInfoModal tracking={item}></MoreInfoModal>
-                          </Td>
-                        </Tr>
-                      );
-                    })}
-                  </Tbody>
-                </Table>
-              </Center>
-            </Card>
-          </Center>
-        </Container>
-      )}
+      {loading ? null : <TrackingTable tracking={tracking}></TrackingTable>}
     </ChakraProvider>
   );
 }
