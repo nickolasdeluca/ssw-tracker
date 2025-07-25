@@ -12,6 +12,7 @@ Data da última atualização desta lista: 03/09/2024
 * [Diálogo Logística](https://dialogologistica.com.br/rastreio/)
 * [Loja virtual LG](https://www.lg.com/br/)
 * [Dominalog](https://dominalog.com.br/)
+* [Rede Ultrafarma](https://www.ultrafarma.com.br/)
 
 Se você conhece alguma outra transportadora que utilize este software, entre em contato para adicionarmos na lista.
 
